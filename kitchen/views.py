@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 
 from kitchen.forms import DishForm
-from models import Dish, DishType, Ingredient
+from .models import Dish, DishType, Ingredient
 
 
 def index(request):

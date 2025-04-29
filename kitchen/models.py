@@ -1,7 +1,6 @@
 from django.db import models
 
 from django.contrib.auth.models import AbstractUser
-from django.forms import DecimalField
 
 
 class DishType(models.Model):
@@ -27,7 +26,7 @@ class Cook(AbstractUser):
 class Dish(models.Model):
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField()
-    price = DecimalField(max_digits=5, decimal_places=2)
+    price = models.DecimalField(max_digits=5, decimal_places=2, default=0)
     image = models.ImageField(upload_to="dish_images/", null=True, blank=True)
     dish_type = models.ForeignKey(DishType, on_delete=models.CASCADE, related_name="dishes")
     cooks = models.ManyToManyField(Cook, related_name="dishes")
