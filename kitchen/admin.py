@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import DishType, Dish, Cook
+
+admin.site.register(DishType)
+admin.site.register(Dish)
+admin.site.register(Cook)
+
