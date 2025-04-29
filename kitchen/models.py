@@ -28,6 +28,7 @@ class Dish(models.Model):
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField()
     price = DecimalField(max_digits=5, decimal_places=2)
+    image = models.ImageField(upload_to="dish_images/", null=True, blank=True)
     dish_type = models.ForeignKey(DishType, on_delete=models.CASCADE, related_name="dishes")
     cooks = models.ManyToManyField(Cook, related_name="dishes")
 
@@ -40,6 +41,7 @@ class Dish(models.Model):
 
 class Ingredient(models.Model):
     name = models.CharField(max_length=100)
+    image = models.ImageField(upload_to="ingredients_images/", null=True, blank=True)
     dishes = models.ManyToManyField(Dish, related_name="ingredients")
 
     def __str__(self):
