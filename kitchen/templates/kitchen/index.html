@@ -1,5 +1,49 @@
 {% extends "base.html" %}
 
+{% block title %}Welcome - Kitchen Service{% endblock %}
+
 {% block content %}
-  <h1>Welcome to the Kitchen Service</h1>
+    <h1>Welcome to the Kitchen Service!</h1>
+    <p>Your go-to place for managing dishes and cooks.</p>
+
+    <div class="row mt-4">
+        <div class="col-md-3">
+            <div class="card text-center info-box dishes">
+                <div class="card-body">
+                    <h3 class="card-title">Dishes</h3>
+                    <p class="card-text display-4">{{ num_dishes }}</p>
+                    <a href="{% url 'kitchen:dish-list' %}" class="btn btn-primary">View Dishes</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center info-box cooks">
+                <div class="card-body">
+                    <h3 class="card-title">Cooks</h3>
+                    <p class="card-text display-4">{{ num_cooks }}</p>
+                    <a href="{% url 'kitchen:cook-list' %}" class="btn btn-success">View Cooks</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center info-box dish-types">
+                <div class="card-body">
+                    <h3 class="card-title">Dish Types</h3>
+                    <p class="card-text display-4">{{ num_dish_types }}</p>
+                    <a href="{% url 'kitchen:dish-type-list' %}" class="btn btn-info">View Types</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+             <div class="card text-center info-box ingredients">
+                <div class="card-body">
+                    <h3 class="card-title">Ingredients</h3>
+                    <p class="card-text display-4">{{ num_ingredients }}</p>
+                    <a href="{% url 'kitchen:ingredient-list' %}" class="btn btn-warning">View Ingredients</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <p class="mt-4 text-muted" style="text-align: center;">You have visited this page {{ num_visits }} time{{ num_visits|pluralize }}.</p>
 {% endblock %}

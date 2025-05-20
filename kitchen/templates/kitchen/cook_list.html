@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+
+{% block title %}Cook List{% endblock %}
+
+{% block content %}
+    <h1>Cook List</h1>
+
+    {% if request.user.is_staff %}
+        <a href="{% url 'kitchen:cook-create' %}" class="btn btn-success mb-3">Create New Cook</a>
+    {% endif %}
+
+    <form method="get" class="mb-3">
+        {% csrf_token %}
+        {{ search_form|crispy }}
+        <button type="submit" class="btn btn-primary">Search</button>
+        <a href="{% url 'kitchen:cook-list' %}" class="btn btn-secondary">Reset</a>
+    </form>
+
+    {% if cook_list %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cook in cook_list %}
+                    <tr>
+                        <td><a href="{% url 'kitchen:cook-detail' cook.id %}">{{ cook.username }}</a></td>
+                        <td>{{ cook.first_name }}</td>
+                        <td>{{ cook.last_name }}</td>
+                        <td>
+                            <a href="{% url 'kitchen:cook-experience-update' cook.id %}" class="btn btn-sm btn-info">Experience</a>
+                            {% if request.user.is_staff %}
+                                <a href="{% url 'kitchen:cook-delete' cook.id %}" class="btn btn-sm btn-danger">Delete</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% if is_paginated %}
+            <nav aria-label="Pagination">
+                <ul class="pagination">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.username %}&username={{ request.GET.username }}{% endif %}">Previous</a></li>
+                    {% endif %}
+                    {% for num in page_obj.paginator.page_range %}
+                        <li class="page-item {% if page_obj.number == num %}active{% endif %}"> {# ЗМІНЕНО num|add:1 на num #}
+                            <a class="page-link" href="?page={{ num }}{% if request.GET.username %}&username={{ request.GET.username }}{% endif %}">{{ num }}</a> {# ЗМІНЕНО num|add:1 на num #}
+                        </li>
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.username %}&username={{ request.GET.username }}{% endif %}">Next</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        {% endif %}
+    {% else %}
+        <p>The cook list is empty.</p>
+    {% endif %}
+{% endblock %}

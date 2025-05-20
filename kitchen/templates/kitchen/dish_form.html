@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %} {# Assuming you installed crispy-forms #}
+
+{% block title %}{% if object %}Update {{ object.name }}{% else %}Create Dish{% endif %}{% endblock %}
+
+{% block content %}
+    <h1 class="text-center">{% if object %}Update {{ object.name }}{% else %}Create a New Dish{% endif %}</h1>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <form method="post" novalidate>
+                {% csrf_token %}
+                <style>
+                    .form-group > div {
+                        max-width: 400px;
+                        width: 100%;
+                    }
+                    #id_description {
+                        max-height: 100px;
+                        overflow-y: auto;
+                    }
+                </style>
+                {{ form|crispy }}
+                <button type="submit" class="btn btn-primary">{% if object %}Update{% else %}Create{% endif %}</button>
+                <a href="{% if object %}{{ object.get_absolute_url }}{% else %}{% url 'kitchen:dish-list' %}{% endif %}" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+{% endblock %}

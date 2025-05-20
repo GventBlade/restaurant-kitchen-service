@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+
+{% block title %}Update Cook Experience{% endblock %}
+
+{% block content %}
+    <h1>Update Cook Experience for {{ cook.username }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-primary">Update Experience</button>
+        <a href="{% url 'kitchen:cook-detail' cook.id %}" class="btn btn-secondary">Cancel</a>
+    </form>
+{% endblock %}

@@ -1,0 +1,47 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'kitchen:index' %}">Kitchen</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'kitchen:dish-list' %}">Dishes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'kitchen:cook-list' %}">Cooks</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'kitchen:dish-type-list' %}">Dish Types</a>
+                    </li>
+                     <li class="nav-item">
+                        <a class="nav-link" href="{% url 'kitchen:ingredient-list' %}">Ingredients</a>
+                    </li>
+                {% endif %}
+            </ul>
+             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                 {% if user.is_authenticated %}
+                    <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ user.username }}
+                      </a>
+                      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{% url 'kitchen:cook-detail' user.pk %}">My Profile</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{% url 'logout' %}?next={{ request.path }}">Logout</a></li>
+                      </ul>
+                    </li>
+                 {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}?next={{ request.path }}">Login</a>
+                    </li>
+                     <li class="nav-item">
+                        <a class="nav-link" href="{% url 'kitchen:cook-create' %}">Sign Up</a>
+                    </li>
+                 {% endif %}
+             </ul>
+        </div>
+    </div>
+</nav>

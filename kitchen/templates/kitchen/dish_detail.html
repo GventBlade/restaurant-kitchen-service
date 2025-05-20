@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}{{ dish.name }}{% endblock %}
+
+{% block content %}
+    <h1>{{ dish.name }}</h1>
+
+    <div class="row">
+        <div class="col-md-8">
+            <p><strong>Price:</strong> ${{ dish.price }}</p>
+            <p>
+                <strong>Type:</strong>
+                <a href="{{ dish.dish_type.get_absolute_url }}" class="text-decoration-none">
+                    <span class="badge bg-info">{{ dish.dish_type.name }}</span>
+                </a>
+            </p>
+            <div class="mb-3">
+                <strong class="text-muted">Description:</strong>
+                <p class="lead">{{ dish.description|default:"No description available." }}</p>
+            </div>
+
+            <h4 class="mt-4">Cooks who can make this:</h4>
+            {% if dish.cooks.all %}
+                <ul>
+                    {% for cook in dish.cooks.all %}
+                        <li>
+                            <a href="{{ cook.get_absolute_url }}" class="text-decoration-none">
+                                <i class="bi bi-person-fill me-1"></i>
+                                {{ cook.first_name }} {{ cook.last_name }} ({{ cook.username }})
+                            </a>
+                            <span class="text-muted"> - {{ cook.years_of_experience }} year{{ cook.years_of_experience|pluralize }} exp.</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted">No cooks assigned yet.</p>
+            {% endif %}
+
+            <h4 class="mt-4">Ingredients:</h4>
+             {% if dish.ingredients.all %}
+                <ul>
+                    {% for ingredient in dish.ingredients.all %}
+                        <li>
+                            <i class="bi bi-tag-fill text-success me-1"></i>
+                            <a href="{{ ingredient.get_absolute_url }}" class="text-decoration-none">{{ ingredient.name }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted">No ingredients listed for this dish.</p>
+            {% endif %}
+
+
+        </div>
+        <div class="col-md-4">
+            <div class="d-grid gap-2">
+                {% if user in dish.cooks.all %}
+                  <a href="{% url 'kitchen:toggle-dish-assign' dish.pk %}" class="btn btn-danger">
+                    <i class="bi bi-person-dash me-1"></i> Unassign Myself
+                  </a>
+                {% else %}
+                  <a href="{% url 'kitchen:toggle-dish-assign' dish.pk %}" class="btn btn-success">
+                    <i class="bi bi-person-plus me-1"></i> Assign Myself
+                  </a>
+                {% endif %}
+
+                <a href="{% url 'kitchen:dish-update' dish.pk %}" class="btn btn-info">
+                    <i class="bi bi-pencil me-1"></i> Edit Dish
+                </a>
+                <a href="{% url 'kitchen:dish-delete' dish.pk %}" class="btn btn-danger">
+                    <i class="bi bi-trash me-1"></i> Delete Dish
+                </a>
+                <a href="{% url 'kitchen:dish-list' %}" class="btn btn-secondary">
+                    <i class="bi bi-list me-1"></i> Back to List
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .lead {
+            font-size: 1.1rem;
+            font-weight: 400;
+            line-height: 1.6;
+            color: #495057;
+        }
+    </style>
+
+{% endblock %}

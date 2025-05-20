@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+
+{% block title %}Ingredient List{% endblock %}
+
+{% block content %}
+    <h1>Ingredient List</h1>
+
+    <form method="get" class="mb-3">
+        {% csrf_token %}
+        {{ search_form|crispy }}
+        <button type="submit" class="btn btn-primary">Search</button>
+        <a href="{% url 'kitchen:ingredient-list' %}" class="btn btn-secondary">Reset</a>
+    </form>
+
+    <a href="{% url 'kitchen:ingredient-create' %}" class="btn btn-success mb-3">Add New Ingredient</a>
+
+    {% if ingredient_list %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ingredient in ingredient_list %}
+                    <tr>
+                        <td><a href="{% url 'kitchen:ingredient-detail' ingredient.id %}">{{ ingredient.name }}</a></td>
+                        <td>
+                            <a href="{% url 'kitchen:ingredient-update' ingredient.id %}" class="btn btn-sm btn-warning">Edit</a>
+                            <a href="{% url 'kitchen:ingredient-delete' ingredient.id %}" class="btn btn-sm btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% if is_paginated %}
+            <nav aria-label="Pagination">
+                <ul class="pagination">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.name %}&name={{ request.GET.name }}{% endif %}">Previous</a></li>
+                    {% endif %}
+                    {# ПОМИЛКА БУЛА ТУТ: ПРИБИРАЄМО |add:1 #}
+                    {% for num in page_obj.paginator.page_range %}
+                        <li class="page-item {% if page_obj.number == num %}active{% endif %}"> {# ЗМІНЕНО num|add:1 на num #}
+                            <a class="page-link" href="?page={{ num }}{% if request.GET.name %}&name={{ request.GET.name }}{% endif %}">{{ num }}</a> {# ЗМІНЕНО num|add:1 на num #}
+                        </li>
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.name %}&name={{ request.GET.name }}{% endif %}">Next</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        {% endif %}
+    {% else %}
+        <p>The ingredient list is empty.</p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ ingredient.name }} Details{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card border-0 shadow-sm">
+        <div class="card-header" style="background-color: rgba(101, 67, 33, 0.8);">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2 class="mb-0 text-white">
+                    <i class="bi bi-carrot me-2" ></i>{{ ingredient.name }}
+                </h2>
+                <a href="{% url 'kitchen:ingredient-list' %}" class="btn btn-light btn-sm">
+                    <i class="bi bi-arrow-left"></i> Back to List
+                </a>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <h3 class="text-center fw-bold text-dark mb-4">Used in {{ ingredient.dishes.all|length }} dish{{ ingredient.dishes.all|pluralize:"es" }}</h3>
+
+            {% if ingredient.dishes.all %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Dish Name</th>
+                            <th class="text-end">Price</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for dish in ingredient.dishes.all %}
+                        <tr>
+                            <td>
+                                <a href="{{ dish.get_absolute_url }}" class="text-decoration-none">
+                                    <i class="bi bi-egg-fried text-warning me-2"></i>
+                                    <strong>{{ dish.name }}</strong>
+                                </a>
+                            </td>
+                            <td class="text-end">${{ dish.price }}</td>
+                            <td>
+                                <div class="btn-group btn-group-sm">
+                                    <a href="{{ dish.get_absolute_url }}" class="btn btn-outline-primary">
+                                        <i class="bi bi-eye"></i> View
+                                    </a>
+                                    <a href="{% url 'kitchen:dish-update' dish.pk %}" class="btn btn-outline-secondary">
+                                        <i class="bi bi-pencil"></i> Edit
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center py-5">
+                <i class="bi bi-carrot text-muted" style="font-size: 3rem;"></i>
+                <h4 class="mt-3 text-muted">No dishes found</h4>
+                <p class="text-muted">This ingredient is not used in any dishes yet.</p>
+                <a href="{% url 'kitchen:dish-create' %}" class="btn btn-primary mt-2">
+                    <i class="bi bi-plus-circle"></i> Add New Dish
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+    .table-hover tbody tr:hover {
+        background-color: rgba(13, 110, 253, 0.05);
+    }
+    .card {
+        border-radius: 0.5rem;
+        overflow: hidden;
+    }
+    .card-header {
+        background-color: rgba(101, 67, 33, 0.8) !important;
+        border-bottom: none;
+    }
+    .dish-count-header {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #212529;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+</style>
+{% endblock %}
