@@ -1,5 +1,5 @@
 # Restaurant Kitchen Service
-
+![restaurant-service.jpg](restaurant-service.jpg)
 This project is a management system for a restaurant kitchen,
 designed to improve communication and organization among chefs.
 It allows chefs to create new dishes and their types,
