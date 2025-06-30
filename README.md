@@ -118,7 +118,7 @@ Log in using superuser or a registered cook's credentials to access the applicat
 
 **Admin Panel Access:**
 * **Login:** `administrator`
-* **Password:** `password123`
+* **Password:** `password123dmin`
 
 ## Requirements
 
