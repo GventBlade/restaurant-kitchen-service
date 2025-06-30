@@ -120,6 +120,9 @@ Log in using superuser or a registered cook's credentials to access the applicat
 * **Login:** `administrator`
 * **Password:** `password123admin`
 
+**User Access:**
+* **Login:** `user`
+* **Password:** `user12345`
 ## Requirements
 
 * Python 3.x
